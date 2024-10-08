@@ -4,14 +4,14 @@ import 'Series.dart';
 class SeriesDetailScreen extends StatelessWidget {
   final Series series;
 
-  SeriesDetailScreen({required this.series});
+  const SeriesDetailScreen({super.key, required this.series});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(series.title),
-        centerTitle: true, 
+        centerTitle: true,
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -19,12 +19,15 @@ class SeriesDetailScreen extends StatelessWidget {
           Container(
             height: 300,
             width: double.infinity,
-            margin: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 10.0), // Margins for the image
+            margin: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 10.0), 
             child: ClipRRect(
               borderRadius: BorderRadius.circular(15.0), 
-              child: Image.asset(
-                series.imageUrl,
+              child: Image.network(
+                series.imageUrl, 
                 fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) {
+                  return const Center(child: Text('Image not found'));
+                },
               ),
             ),
           ),
@@ -33,24 +36,24 @@ class SeriesDetailScreen extends StatelessWidget {
             padding: const EdgeInsets.all(16.0),
             child: Text(
               series.title,
-              style: TextStyle(
-                fontSize: 24, // Larger font size for the title
+              style: const TextStyle(
+                fontSize: 24, 
                 fontWeight: FontWeight.bold,
               ),
-              textAlign: TextAlign.center, // Center the text
+              textAlign: TextAlign.center, 
             ),
           ),
-          // Centered description
+         
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 10.0),
             child: Text(
-              series.description,
+              series.description ?? 'No description available', 
               style: TextStyle(
                 fontSize: 16,
-                color: Colors.grey[700], // Softer color for the text
-                height: 1.5, // Adjust line spacing
+                color: Colors.grey[700], 
+                height: 1.5, 
               ),
-              textAlign: TextAlign.center, // Center the description
+              textAlign: TextAlign.center, 
               softWrap: true,
             ),
           ),
